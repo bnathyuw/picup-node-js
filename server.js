@@ -10,11 +10,23 @@ function getContentPath(requestUrl) {
 	return filePath
 }
 
-http.createServer(function (request, response) {
-	console.log(request.method, request.url)
-	
+function getContentType(filePath) {
+	var extname = path.extname(filePath)
+		, contentType
+	switch (extname) {
+		case '.js':
+			contentType = 'text/javascript'
+			break
+		default:
+			contentType = 'text/html; charset=utf-8'
+			break
+	}
+	return contentType
+}
+
+function processGet(request, response) {
 	filePath = getContentPath(request.url)
-	
+
 	path.exists(filePath, function(exists) {
 		if (exists) {
 			fs.readFile(filePath, function(error, content) {
@@ -22,7 +34,7 @@ http.createServer(function (request, response) {
 					response.writeHead(500)
 					response.end()
 				} else {
-					response.writeHead(200, { 'Content-Type': 'text/html'})
+					response.writeHead(200, { 'Content-Type': getContentType(filePath)})
 					response.end(content, 'utf-8')
 				}
 			})
@@ -31,6 +43,12 @@ http.createServer(function (request, response) {
 			response.end()
 		}
 	})
+}
+
+http.createServer(function (request, response) {
+	console.log(request.method, request.url)
+	
+	processGet(request, response)
 
 }).listen(1337, "192.168.1.71")
 

@@ -25,6 +25,14 @@ function getContentType(filePath) {
 	return contentType
 }
 
+
+function processPost(request, response) {
+	var form = new formidable.IncomingForm()
+	form.parse(request, function(error, fields, files){
+		console.log(request, fields, files);
+	})
+}
+
 function processGet(request, response) {
 	filePath = getContentPath(request.url)
 
@@ -51,10 +59,7 @@ http.createServer(function (request, response) {
 	
 	switch(request.method.toLowerCase()){
 		case 'post':
-			var form = new formidable.IncomingForm()
-			form.parse(request, function(error, fields, files){
-				console.log(request, fields, files);
-			})
+			processPost(request, response)
 			break
 		
 		default:

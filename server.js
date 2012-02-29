@@ -1,6 +1,7 @@
 var http = require('http')
 	, path = require('path')
 	, fs = require('fs')
+	, formidable = require('formidable')
 
 function getContentPath(requestUrl) {
 	var filePath = './content' + requestUrl
@@ -48,7 +49,18 @@ function processGet(request, response) {
 http.createServer(function (request, response) {
 	console.log(request.method, request.url)
 	
-	processGet(request, response)
+	switch(request.method.toLowerCase()){
+		case 'post':
+			var form = new formidable.IncomingForm()
+			form.parse(request, function(error, fields, files){
+				console.log(request, fields, files);
+			})
+			break
+		
+		default:
+			processGet(request, response)
+			break
+	}
 
 }).listen(1337, "192.168.1.71")
 

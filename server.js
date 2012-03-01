@@ -26,14 +26,24 @@ function getContentType(filePath) {
 }
 
 
-function processPost(request, response) {
+function processPost(request, response, callback) {
 	var form = new formidable.IncomingForm()
 	form.parse(request, function(error, fields, files){
-		console.log(request, fields, files);
+		if (error) {
+			response.writeHead(500)
+			response.end()
+		} else {
+			console.log(request, fields, files)
+			response.writeHead(200, { 'Content-Type': 'application/json'})
+			response.end('{"image":"image.jpg"}', 'utf-8')
+		}
 	})
+	if(callback) {
+		callback(request, response)
+	}
 }
 
-function processGet(request, response) {
+function processGet(request, response, callback) {
 	filePath = getContentPath(request.url)
 
 	path.exists(filePath, function(exists) {
@@ -52,6 +62,9 @@ function processGet(request, response) {
 			response.end()
 		}
 	})
+	if(callback) {
+		callback(request, response)
+	}
 }
 
 http.createServer(function (request, response) {

@@ -4,9 +4,7 @@ var http = require('http')
 	, formidable = require('formidable')
 
 function getContentPath(requestUrl) {
-	console.log('Handling GET ' + requestUrl)
 	var filePath = requestUrl.indexOf('/images/') === 0 ? '.' + requestUrl : './content' + requestUrl
-	console.log('Looking for file ' + filePath)
 	if (filePath == './content/') {
 		filePath = './content/index.html'
 	}
@@ -46,8 +44,6 @@ function processPost(request, response, callback) {
 			response.writeHead(500)
 			response.end()
 		} else {
-			console.log(request, fields, files)
-			
 			filename = "images/" + files.image.name
 			
 			fs.readFile(files.image.path, function(error, data){

@@ -5,8 +5,11 @@
 </head>
 <body>
 	<header><h1>Picup + node.js</h1></header>
-	<p>Try uploading a file:</p>
-	<label>Here’s my file: <input type="file" name="image" id="image" /></label>
+	<form action="images" method="post" enctype="multipart/form-data">
+		<p>Try uploading a file:</p>
+		<label>Here’s my file: <input type="file" name="image" id="image" /></label>
+		<input type="submit" />
+	</form>
 	<script src="picup.js"></script>
 	<script src="home.js"></script>
 </body>

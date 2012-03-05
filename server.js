@@ -20,6 +20,16 @@ function getContentType(filePath) {
 		case '.js':
 			contentType = 'text/javascript'
 			break
+		case '.jpg':
+		case '.jpeg':
+			contentType = 'image/jpeg'
+			break
+		case '.gif':
+			contentType = 'image/gif'
+			break
+		case '.png':
+			contentType = 'image/png'
+			break
 		default:
 			contentType = 'text/html; charset=utf-8'
 			break

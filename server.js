@@ -28,14 +28,28 @@ function getContentType(filePath) {
 
 function processPost(request, response, callback) {
 	var form = new formidable.IncomingForm()
+		, filename
 	form.parse(request, function(error, fields, files){
 		if (error) {
 			response.writeHead(500)
 			response.end()
 		} else {
 			console.log(request, fields, files)
-			response.writeHead(200, { 'Content-Type': 'application/json'})
-			response.end('{"image":"image.jpg"}', 'utf-8')
+			
+			filename = "images/" + files.image.name
+			
+			fs.readFile(files.image.path, function(error, data){
+				if (error) throw error
+				
+				fs.writeFile(filename, data, function(error) {
+					if (error) throw error
+					response.writeHead(201, { 
+						'Content-Type': 'application/json', 
+						'Location': '/' + filename
+					})
+					response.end('{"image":"/' + filename + '"}', 'utf-8')
+				})
+			})
 		}
 	})
 	if(callback) {

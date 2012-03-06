@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+	
+</head>
+<body>
+	<header><h1>Image uploaded</h1></header>
+	<p>Your image has been uploaded; please wait to be returned to the form</p>
+	<script>
+		var responseString = window.location.hash.
+			substr(1).
+			split("&").
+			map(function(item) {
+				return item.split("=")
+			}).
+			filter(function(item) {
+				return item[0] === 'serverResponse'
+			})[0][1]
+			, response = JSON.parse(unescape(responseString))
+		document.write('<img src="' + response.image + '" />')
+	</script>
+</body>
